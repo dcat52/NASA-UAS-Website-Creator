@@ -23,6 +23,7 @@
 *    SHALL REMAIN ON ALL COPIES OF THE SOFTWARE.                            *
 *                                                                           *
 *****************************************************************************/
+
 /*****************************************************************************
 * File: HTML.java     	                                        		    *
 *                                                                           *
@@ -40,38 +41,38 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author 	Davis Catherman
- * 			Christopher Newport University, class of 2018
- * 			DavisCatherman.com
+ * @author Davis Catherman Christopher Newport University, class of 2018
+ *         DavisCatherman.com
  * 
- * date:	Fall 2016
+ *         date: Fall 2016
  */
 public class HTML {
 
 	public static void main(String[] args) {
 		readTemplates();
-		
-	    Calendar cal = Calendar.getInstance();
-	    int year = cal.get(Calendar.YEAR);
-	    int month = cal.get(Calendar.MONTH) + 1;
-	    int day = cal.get(Calendar.DAY_OF_MONTH);
-	    
+
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH) + 1;
+		int day = cal.get(Calendar.DAY_OF_MONTH);
+
 		String dateString = String.format("%d/%d/%d", month, day, year);
 		Vars.FT_template = Vars.FT_template.replace("INSERT_DATE_HERE", dateString);
 		Vars.IO_template = Vars.IO_template.replace("INSERT_DATE_HERE", dateString);
 		Vars.FL_template = Vars.FL_template.replace("INSERT_DATE_HERE", dateString);
+		Vars.CL_template = Vars.CL_template.replace("INSERT_DATE_HERE", dateString);
 	}
-	
+
 	/**
 	 * reads in the template files and puts them in public vars
 	 */
 	public static void readTemplates() {
-		Vars.FT_template = readFile(Vars.HTML_PATH+"TEMPLATE_Flight-Table.html").trim();
-		Vars.IO_template = readFile(Vars.HTML_PATH+"TEMPLATE_Index-Of.html").trim();
-		Vars.FL_template = readFile(Vars.HTML_PATH+"TEMPLATE_Flight-List.html").trim();
-		
+		Vars.FT_template = readFile(Vars.HTML_PATH + "TEMPLATE_Flight-Table.html").trim();
+		Vars.IO_template = readFile(Vars.HTML_PATH + "TEMPLATE_Index-Of.html").trim();
+		Vars.FL_template = readFile(Vars.HTML_PATH + "TEMPLATE_Flight-List.html").trim();
+		Vars.CL_template = readFile(Vars.HTML_PATH + "TEMPLATE_Components-List.html").trim();
 	}
-	
+
 	/**
 	 * helper method for reading the template files
 	 * 

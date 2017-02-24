@@ -65,7 +65,7 @@ public class Config {
 
 		// path to the HTML
 		// change between 'localCopy' and 'EdgeShare'
-		String htmlPath = EdgeShare;
+		String htmlPath = localCopy;
 
 		// list of paths for vehicle data from Z: Drive (EdgeShare)
 		String[] paths = { "Z:\\Veh_R1", "Z:\\Veh_R2", "Z:\\Veh_R3", "Z:\\Veh_R4", "Z:\\Veh_R5", "Z:\\Veh_R6",

@@ -43,29 +43,26 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * @author 	Davis Catherman
- * 			Christopher Newport University, class of 2018
- * 			DavisCatherman.com
+ * @author Davis Catherman Christopher Newport University, class of 2018
+ *         DavisCatherman.com
  * 
- * date:	Fall 2016
+ *         date: Fall 2016
  */
 public class Main {
 
 	/**
-	 * TODO:
-	 * 		components page automation
-	 * 		software pages (GNDWatch, EdgeAOS)
+	 * TODO: components page automation; add software pages (GNDWatch, EdgeAOS)
 	 */
 	public static void main(String[] args) {
 
 		// call the Config file
 		// edit the Config to change minor settings
 		Config.settingsManager();
-		
+
 		// paths to search for flight/deployment data
 		// for edgeshare, mounted as Z: drive
 		String[] paths = Vars.paths;
-		
+
 		// create array list and get dirs recursively for all paths above
 		ArrayList<File> dirs = new ArrayList<File>();
 		for (String singlePath : paths) {
@@ -82,39 +79,45 @@ public class Main {
 
 		// for all the deployment numbers to be searched
 		for (int i = depMin; i <= depMax; i++) {
-			
+
 			// create a new deployment with that number
 			Deployment tempD = new Deployment(i);
 			deps.add(tempD);
-			
-			// add parent dirs that correspond to that deployment (based on dir naming conventions)
+
+			// add parent dirs that correspond to that deployment (based on dir
+			// naming conventions)
 			ArrayList<String> depFlights = findDeploy(i, dirs);
 
 			// for each dir that was pulled (it most likely is a flight dir)
 			for (String flightDir : depFlights) {
-				
-				// create a new flight object with the dir and it will parse the data on creation
+
+				// create a new flight object with the dir and it will parse the
+				// data on creation
 				Flight tempF = new Flight(i, flightDir);
-				
-				// add the flight to the deployment specific array list of flights
+
+				// add the flight to the deployment specific array list of
+				// flights
 				tempD.addFlight(tempF);
 
-				// if it has a valid flight num, then is an actual flight directory
+				// if it has a valid flight num, then is an actual flight
+				// directory
 				if (!tempF.getfNum().equals("-1")) {
-					
+
 					// increment flight counter
 					tempD.incFlightCount();
-					
+
 					// for each sub directory parsed in the flight directory
 					for (String fDir : tempF.getfSubDirs()) {
-						
-						// split the sub dir so the last portion can be harvested for the FlightTestTable
+
+						// split the sub dir so the last portion can be
+						// harvested for the FlightTestTable
 						String[] splitDir = fDir.split("\\\\");
-						
+
 						// get that last portion
 						String lastSplit = splitDir[splitDir.length - 1];
-						
-						// if the deployment does not already contains this one, then add it
+
+						// if the deployment does not already contains this one,
+						// then add it
 						if (!tempD.getAllSubDirs().contains(lastSplit)) {
 							tempD.addToAllSubDirs(lastSplit);
 						}
@@ -128,59 +131,51 @@ public class Main {
 
 		// go through deployment array list for building flight test tables
 		for (Deployment singleDep : deps) {
-			
-			// if the program found a flight for that deployment, build the file and write it
+
+			// if the program found a flight for that deployment, build the file
+			// and write it
 			if (singleDep.getFlights().size() != 0) {
-				
-				// sort the flights for that deployment so they are in order 
+
+				// sort the flights for that deployment so they are in order
 				singleDep.sortFlights();
-				
-				if(singleDep.getFlightCount() != 0) {
-				HTML_FlightTestTable.buildFile(singleDep);
-				HTML_FlightTestTable.writeFile(singleDep.getDepNum());
+
+				if (singleDep.getFlightCount() != 0) {
+					HTML_FlightTestTable.buildFile(singleDep);
+					HTML_FlightTestTable.writeFile(singleDep.getDepNum());
 				}
 			}
 
-			if(singleDep.getFlightCount() == 0) {
-				
+			if (singleDep.getFlightCount() == 0) {
+
 				// else alert the user that it is being skipped
 				System.out.println(String.format("Warning! Skipping Dep %d", singleDep.getDepNum()));
 			}
 		}
-		
+
 		// go through deployments for building index of pages
-		for(Deployment singleDep : deps) {
-			
+		for (Deployment singleDep : deps) {
+
 			// go through each flight of each deployment
-			for(Flight flt : singleDep.getFlights()) {
-				
+			for (Flight flt : singleDep.getFlights()) {
+
 				// go through each sub dir for each flight
-				for(String dir : flt.getfSubDirs()) {
-					
-					// build a page for each sub dir (even if sub dir is empty [for now])
-					HTML_IndexOf.buildPage(singleDep, flt, dir);
+				for (String dir : flt.getfSubDirs()) {
+
+					// build a page for each sub dir (even if sub dir is empty
+					// [for now])
+					HTML_IndexOf.buildPageForFlights(singleDep, flt, dir);
 				}
 			}
 		}
-		
-		// TODO: add a overwrite table or build from existing table option (partial code exists below)
+
 		// go through deployments for building flight list table
-		for(Deployment singleDep : deps) {
-			
-			// use string to check the flight list already has this deployment inside
-			String depStr = "DEP_" + singleDep.getDepNum();
-			if(Vars.FL_template.contains(depStr)) {
-				
-				// TODO: WIP verify code - untested
-				// update the flight template instead of building new one
-				HTML_FlightList.updateTemplate(singleDep);
-			}
-			else {
-				// else, build new one from scratch
-				HTML_FlightList.buildPage(singleDep);
-			}
+		for (Deployment singleDep : deps) {
+
+			// build new table row from scratch
+			HTML_FlightList.buildPage(singleDep);
+
 		}
-		
+
 		// save to file var to be written
 		Vars.file = Vars.FL_template;
 		HTML_FlightList.writeFile();
@@ -213,8 +208,7 @@ public class Main {
 
 	/**
 	 * creates an array list of the directories immediately concerning a
-	 * specified deployment number
-	 * Note: based on directory naming convention
+	 * specified deployment number Note: based on directory naming convention
 	 * 
 	 * @param depNumber
 	 *            current deploy being worked with

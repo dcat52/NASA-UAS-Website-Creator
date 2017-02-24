@@ -117,7 +117,6 @@ public class Flight extends Deployment {
 	 *            portion of directory path
 	 */
 	private void parseLoc(String piece) {
-		// TODO: add in other locations
 		if (piece.equals("Aberdeen") || piece.equals("Pungo") || piece.equals("Atterbury"))
 			this.fLoc = piece;
 		if (piece.equals("AP") || piece.equals("APHill"))
@@ -207,7 +206,7 @@ public class Flight extends Deployment {
 			while ((line = Buff.readLine()) != null) {
 				imageTooltip += line + "\n";
 			}
-			
+
 			// use the second line of the tooltip for data verification info
 			sysVerification = imageTooltip.split("\n")[1];
 

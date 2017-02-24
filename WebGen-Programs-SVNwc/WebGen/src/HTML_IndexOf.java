@@ -49,7 +49,7 @@ import java.util.Date;
  */
 public class HTML_IndexOf {
 	
-	public static void buildPage(Deployment dep, Flight flt, String dir) {
+	public static void buildPageForFlights(Deployment dep, Flight flt, String dir) {
 		String page = Vars.IO_template;
 		dir = dir.replace("\\", "\\\\");
 		page = page.replaceAll("INSERT_INDEX_LOCATION_HERE", dir.replace(Vars.DRIVE_LETTER, "..\\..\\..\\"));
@@ -66,6 +66,11 @@ public class HTML_IndexOf {
 		String temp = pgName.toString().toLowerCase();
 		if(!temp.contains("not operated") && !temp.contains("no data"))
 			writeFile(pgName.toString(), page);
+	}
+	
+	public static void buildPageForComponents(Component c) {
+		// TODO: Write code here for generating the individual components
+		// indexOf pages
 	}
 	
 	public static String generateLinks(String path) {

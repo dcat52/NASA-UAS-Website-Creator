@@ -23,6 +23,7 @@
 *    SHALL REMAIN ON ALL COPIES OF THE SOFTWARE.                            *
 *                                                                           *
 *****************************************************************************/
+
 /*****************************************************************************
 * File: Vars.java                                             		        *
 *                                                                           *
@@ -38,11 +39,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * @author 	Davis Catherman
- * 			Christopher Newport University, class of 2018
- * 			DavisCatherman.com
+ * @author Davis Catherman Christopher Newport University, class of 2018
+ *         DavisCatherman.com
  * 
- * date:	Fall 2016
+ *         date: Fall 2016
  */
 public final class Vars {
 	private Vars() {
@@ -60,6 +60,7 @@ public final class Vars {
 	public static String FT_template = "";
 	public static String IO_template = "";
 	public static String FL_template = "";
+	public static String CL_template = "";
 
 	// file holder for writing
 	public static String file = "";
@@ -77,14 +78,15 @@ public final class Vars {
 	public static final String DATA_LINK = "<a href=\"INSERT_HERE\">X</a>";
 	public static final String END_TABLE = "</table>";
 
-	public static final String DEP_ROW = "\t<tr>\n" + "\t\t<td><a href=\"DEP_INSERT_DEP_NUM_HERE_misc.html\">INSERT_DEP_NUM_HERE</a></td>\n"
+	public static final String DEP_ROW = "\t<tr>\n"
+			+ "\t\t<td><a href=\"DEP_INSERT_DEP_NUM_HERE_misc.html\">INSERT_DEP_NUM_HERE</a></td>\n"
 			+ "\t\t<td>INSERT_VEHICLE_HERE</td>\n" + "\t\t<td>INSERT_FLIGHT_NUMS_HERE</td>\n"
 			+ "\t\t<td>INSERT_DEP_LINK_HERE</td>\n" + "\t</tr>\n";
 	public static final String DEP_LINK = "<a href=\"DEP_INSERT_DEP_NUM_HERE_table.html\">X</a>";
 	public static final String GENERIC_LINK = "<a href=\"INSERT_LINKED_LOCATION_HERE\">INSERT_DISPLAY_TEXT_HERE</a>";
 	public static final String TAB = "&nbsp;";
 	public static final String NEW_LINE = "&#10;";
-	
+
 	// file types for index of
 	public static final ArrayList<String> FILE_TYPE = new ArrayList<String>(
 			Arrays.asList("bmp", "gif", "jpg", "png", "avi", "mov", "mpg", "wmv", "mp3", "wav", "wma", "aac", "real",
