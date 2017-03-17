@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -69,15 +70,60 @@ public class HTML_IndexOf {
 	}
 	
 	public static void buildPageForComponents(Component c) {
-		// TODO: Write code here for generating the individual components
-		// indexOf pages
+		String page = Vars.IO_template;
+		String tbl = generateLinks(c.path);
+		String dir = c.path.replaceAll("\\\\", "\\\\\\\\");
+		page = page.replaceAll("INSERT_INDEX_LOCATION_HERE", dir.replace(Vars.DRIVE_LETTER, "..\\"));
+		page = page.replace("INSERT_TABLE_HERE", tbl);
+		
+		StringBuilder pgName = new StringBuilder();
+		pgName.append(Vars.HTML_PATH);
+		pgName.append("component_ " + c.name + ".html");
+		writeFile(pgName.toString(), page);
+		
+	}
+	
+	public static void buildPageForVehInfo(MiscIndexOf mio) {
+		String page = Vars.IO_template;
+		String tbl = generateLinks(mio.path);
+		String dir = mio.path.replaceAll("\\\\", "\\\\\\\\");
+		page = page.replaceAll("INSERT_INDEX_LOCATION_HERE", dir.replace(Vars.DRIVE_LETTER, "..\\"));
+		page = page.replace("INSERT_TABLE_HERE", tbl);
+		
+		StringBuilder pgName = new StringBuilder();
+		pgName.append(Vars.HTML_PATH);
+		pgName.append(mio.pageName);
+		writeFile(pgName.toString(), page);
+	}
+	
+	public static void buildDropDownMenus(ArrayList<MiscIndexOf[]> sepByVeh) {
+		StringBuilder dropDown = new StringBuilder();
+		for(MiscIndexOf[] vehMios : sepByVeh) {
+			StringBuilder allLI = new StringBuilder();
+			for(MiscIndexOf mio : vehMios) {
+				String li = Vars.SUB_LIST_ITEM;
+				li = li.replace("INSERT_LINK_HERE", Vars.GENERIC_LINK);
+				li = li.replace("INSERT_LINKED_LOCATION_HERE", mio.pageName);
+				li = li.replace("INSERT_DISPLAY_TEXT_HERE", mio.dataType);
+				allLI.append(li);
+			}
+			String vi = Vars.VEH_LIST_ITEM;
+			vi = vi.replace("INSERT_SUB_LIST_ITEMS_HERE", allLI.toString());
+			vi = vi.replace("INSERT_VEHICLE_HERE", vehMios[0].veh);
+			dropDown.append(vi);
+		}
+			
+		Vars.FL_template = Vars.FL_template.replace("INSERT_VEHICLE_MENUS_HERE", dropDown.toString());
+		Vars.FT_template = Vars.FT_template.replace("INSERT_VEHICLE_MENUS_HERE", dropDown.toString());
+		Vars.IO_template = Vars.IO_template.replace("INSERT_VEHICLE_MENUS_HERE", dropDown.toString());
+		Vars.CL_template = Vars.CL_template.replace("INSERT_VEHICLE_MENUS_HERE", dropDown.toString());
 	}
 	
 	public static String generateLinks(String path) {
 		File f = new File(path);
 		File[] files = f.listFiles();
 		
-		StringBuilder links = new StringBuilder();
+		ArrayList<String> links = new ArrayList<String>();
 		
 		for (File file : files) {
 
@@ -109,9 +155,18 @@ public class HTML_IndexOf {
 					entry = entry.replace("default.ico", Vars.ALT_TYPE.get(i) + ".ico");
 				}
 			}
-			links.append(entry);
+			links.add(entry);
+			
 		}
-		String s = links.toString();
+
+		links.sort(null);
+		
+		StringBuilder linksString = new StringBuilder();
+		
+		for(String l : links)
+			linksString.append(l);
+		
+		String s = linksString.toString();
 		s = s.replaceAll(Vars.DRIVE_LETTER, "../../../");
 		return s;
 	}

@@ -1,3 +1,5 @@
+import java.io.File;
+
 /*****************************************************************************
 * WebGen Suite - Web Site Creator											*
 *      __       __            __         ______                      		*
@@ -33,13 +35,18 @@
 * 	 1) 
 *                                                                           *
 *****************************************************************************/
-public class Component {
+public class Component<T extends Comparable<T>> implements Comparable<Component<T>> {
 	protected String name;
 	protected String path;
 	
-	public Component() {
+	public Component(File cF) {
+		this.path = cF.getAbsolutePath();
+		this.name = cF.getName();
 	}
-	
-	// TODO: write code here for parsing the information of each component
+
+	@Override
+	public int compareTo(Component<T> c1) {
+		return this.name.compareTo(c1.name);
+	}	
 	
 }

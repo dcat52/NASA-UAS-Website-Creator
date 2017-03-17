@@ -77,7 +77,7 @@ public class HTML_FlightTestTable {
 	 */
 	private static String buildTable(Deployment dep) {
 		StringBuilder tblTitle = new StringBuilder();
-		tblTitle.append(dep.getFlights().get(0).getfVeh());
+		tblTitle.append(dep.getFlights().get(0).fVeh);
 		tblTitle.append(String.format(" DEP-%d FLIGHT TEST TABLE", dep.getDepNum()));
 
 		StringBuilder tbl = new StringBuilder();

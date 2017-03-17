@@ -132,14 +132,9 @@ public class Flight extends Deployment {
 	 *            portion of directory path
 	 */
 	private void parseVeh(String piece) {
-		String temp = piece.substring(0, 1);
-		// had to add special cases for non-typical planes flown
-		if (((temp.equals("R") || temp.equals("P") || (temp.equals("C") && !piece.equals("C:")))
-				&& (piece.length() <= 3 || piece.contains("&")))
-				|| (temp.equals("N") && (piece.length() <= 6 || piece.contains("&"))) || piece.contains("Cub")
-				|| piece.contains("UltraStick")) {
-			this.fVeh = piece;
-		}
+		String v = Main.parseVeh(piece);
+		if(v != null)
+			this.fVeh = v;
 	}
 
 	/**

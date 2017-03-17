@@ -51,14 +51,21 @@ import java.util.ArrayList;
 public class Main {
 
 	/**
-	 * TODO: components page automation; add software pages (GNDWatch, EdgeAOS)
+	 * TODO: add software pages (GNDWatch, EdgeAOS)
 	 */
 	public static void main(String[] args) {
 
+		
 		// call the Config file
 		// edit the Config to change minor settings
 		Config.settingsManager();
 
+		// call to read in the template files for the HTML outputting
+		HTML.main(null);
+
+		// generate the misc indexOf pages and their dropdowns in the template
+		MiscIndexOf.genMiscIndexOfPages();
+		
 		// paths to search for flight/deployment data
 		// for edgeshare, mounted as Z: drive
 		String[] paths = Vars.paths;
@@ -66,7 +73,7 @@ public class Main {
 		// create array list and get dirs recursively for all paths above
 		ArrayList<File> dirs = new ArrayList<File>();
 		for (String singlePath : paths) {
-			getDirs(singlePath, dirs);
+			getDirs(singlePath, dirs, true);
 		}
 
 		// process only these deployment numbers and between
@@ -78,11 +85,10 @@ public class Main {
 		ArrayList<Deployment> deps = new ArrayList<Deployment>();
 
 		// for all the deployment numbers to be searched
-		for (int i = depMin; i <= depMax; i++) {
+		for (int i = depMin; i <= depMax + 5; i++) {
 
 			// create a new deployment with that number
 			Deployment tempD = new Deployment(i);
-			deps.add(tempD);
 
 			// add parent dirs that correspond to that deployment (based on dir
 			// naming conventions)
@@ -124,10 +130,18 @@ public class Main {
 					}
 				}
 			}
-		}
 
-		// call to read in the template files for the HTML outputting
-		HTML.main(null);
+			if (i > depMax) {
+				if (tempD.getFlightCount() > 0) {
+
+					System.out.println("Dep max may have been set too low.");
+
+					deps.add(tempD);
+				}
+			} else {
+				deps.add(tempD);
+			}
+		}
 
 		// go through deployment array list for building flight test tables
 		for (Deployment singleDep : deps) {
@@ -179,6 +193,35 @@ public class Main {
 		// save to file var to be written
 		Vars.file = Vars.FL_template;
 		HTML_FlightList.writeFile();
+
+		// TODO: Verify Code
+		
+		// c for component
+		ArrayList<File> cDirs = new ArrayList<File>();
+		String cPath = "Z:\\Components";
+		getDirs(cPath, cDirs, false);
+
+		ArrayList<Component> components = new ArrayList<Component>();
+		for(File cF : cDirs) {
+			Component tempC = new Component(cF);
+			components.add(tempC);
+		}
+		
+		components.sort(null);
+		
+		for(Component c : components) {
+			HTML_ComponentList.generateComponentsTable(c);
+		}
+		
+		HTML_ComponentList.writeFile();
+		
+		for(Component c : components) {
+			HTML_IndexOf.buildPageForComponents(c);
+		}
+		
+		System.out.println("#################################");
+		System.out.println("##########   DONE!!!   ##########");
+		System.out.println("#################################");
 	}
 
 	/**
@@ -193,15 +236,17 @@ public class Main {
 	 *            directories
 	 * 
 	 */
-	public static void getDirs(String directoryName, ArrayList<File> dirs) {
+	public static void getDirs(String directoryName, ArrayList<File> dirs, boolean recursive) {
 		File directory = new File(directoryName);
-
+		// TODO: verify recursion boolean
 		// get all the directories from a directory
 		File[] fList = directory.listFiles();
 		for (File file : fList) {
 			if (file.isDirectory()) {
 				dirs.add(file);
-				getDirs(file.getAbsolutePath(), dirs);
+
+				if (recursive)
+					getDirs(file.getAbsolutePath(), dirs, recursive);
 			}
 		}
 	}
@@ -229,5 +274,17 @@ public class Main {
 			}
 		}
 		return list;
+	}
+
+	public static String parseVeh(String piece) {
+		String temp = piece.substring(0, 1);
+		// had to add special cases for non-typical planes flown
+		if (((temp.equals("R") || temp.equals("P") || (temp.equals("C") && !piece.equals("C:")))
+				&& (piece.length() <= 3 || piece.contains("&")))
+				|| (temp.equals("N") && (piece.length() <= 6 || piece.contains("&"))) || piece.contains("Cub")
+				|| piece.contains("UltraStick")) {
+			return piece;
+		}
+		return null;
 	}
 }

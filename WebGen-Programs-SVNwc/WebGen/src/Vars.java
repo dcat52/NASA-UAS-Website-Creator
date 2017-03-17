@@ -57,10 +57,10 @@ public final class Vars {
 	public static String[] paths = {};
 
 	// template holders
-	public static String FT_template = "";
-	public static String IO_template = "";
-	public static String FL_template = "";
-	public static String CL_template = "";
+	public static String FT_template = ""; //Flight Table
+	public static String IO_template = ""; //Index Of
+	public static String FL_template = ""; //Flight List
+	public static String CL_template = ""; //Components List
 
 	// file holder for writing
 	public static String file = "";
@@ -72,10 +72,11 @@ public final class Vars {
 	public static final String COLUMN_WIDTH = "\t<col width=\"50\" />\n";
 	public static final String TBL_ROW_1 = "\t<tr>\n";
 	public static final String COLUMN_NAME = "\t\t<th width=\"INSERT_WIDTH_HERE\" rowspan=\"2\"><p>INSERT_NAME_HERE<br></p></th>\n";
-	public static final String TBL_ROW_2 = "\t</tr>\n" + "\t<tr>\n" + "\t</tr>\n";
+	public static final String TBL_ROW_2 = "\t</tr>\n" + "\t<tr>\n" + "\n\t</tr>\n";
 	public static final String DATA_ROW = "\t<tr>\n" + "INSERT_HERE" + "\t</tr>\n";
 	public static final String DATA_CELL = "\t\t<td>INSERT_HERE</td>\n";
 	public static final String DATA_LINK = "<a href=\"INSERT_HERE\">X</a>";
+	public static final String DATA_LINK2 = "<a href=\"INSERT_LINKED_FILE_HERE\">INSERT_DISPLAY_TEXT_HERE</a>";
 	public static final String END_TABLE = "</table>";
 
 	public static final String DEP_ROW = "\t<tr>\n"
@@ -83,7 +84,9 @@ public final class Vars {
 			+ "\t\t<td>INSERT_VEHICLE_HERE</td>\n" + "\t\t<td>INSERT_FLIGHT_NUMS_HERE</td>\n"
 			+ "\t\t<td>INSERT_DEP_LINK_HERE</td>\n" + "\t</tr>\n";
 	public static final String DEP_LINK = "<a href=\"DEP_INSERT_DEP_NUM_HERE_table.html\">X</a>";
-	public static final String GENERIC_LINK = "<a href=\"INSERT_LINKED_LOCATION_HERE\">INSERT_DISPLAY_TEXT_HERE</a>";
+	public static final String GENERIC_LINK = "<a href=\"INSERT_LINKED_LOCATION_HERE\"><span>INSERT_DISPLAY_TEXT_HERE</span></a>";
+	public static final String SUB_LIST_ITEM = "\t\t<li>INSERT_LINK_HERE</li>";
+	public static final String VEH_LIST_ITEM = "<li class='has-sub'><a href='#'><span>INSERT_VEHICLE_HERE</span></a>\n\t<ul>\nINSERT_SUB_LIST_ITEMS_HERE\n\t</ul>\n\t</li>";
 	public static final String TAB = "&nbsp;";
 	public static final String NEW_LINE = "&#10;";
 
